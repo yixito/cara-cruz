@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cara o Cruz</title>
+  </head>
+  <body>
+    <p>Intenta adivinar si tocará cara o cruz.</p>
+    <button
+      onclick="
+      playGame('cara');
+    ">
+      Cara
+    </button>
+    <button
+      onclick="
+      playGame('cruz');
+    ">
+      Cruz
+    </button>
+    <script>
+      let prediction = '';
+      let result = '';
+      let coin = '';
+      let randomNumber = Math.random();
+
+      const score = JSON.parse(
+        localStorage.getItem('score')) || {
+          wins: 0,
+          losses: 0,
+        };
+
+      if (score) {
+        console.log('Se han recuperado los datos.');
+        console.log(score);
+      } else {
+        console.log('No se han encontrado datos.');
+        console.log(score);
+      }
+
+      function playGame(prediction) {
+        result = '';
+        coin = '';
+
+        coinGenerator();
+
+        if (coin === prediction) {
+          result = 'Lo adivinaste!';
+          score.wins++;
+        } else {
+          result = 'No lo adivinaste!';
+          score.losses++;
+        }
+
+        localStorage.setItem('score', JSON.stringify(score));
+
+        alert(`Tu has elegido ${prediction}, y tocó ${coin}. ${result}
+Ganadas: ${score.wins}, Perdidas ${score.losses}.`);
+      }
+
+      function coinGenerator() {
+        randomNumber = Math.random();
+
+        randomNumber < 0.5 ? (coin = 'cara') : (coin = 'cruz');
+        return coin;
+      }
+    </script>
+  </body>
+</html>
